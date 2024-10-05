@@ -1,0 +1,10 @@
+build:
+	just bison && just lex && just compile
+lex:
+	flex  lexer.l 
+compile:
+	clang -o parser lex.yy.c y.tab.c -ly -ll
+bison:
+	bison -vdty parser.y
+@cleanup:
+	rm -rf *.tab.* *.yy.* *.output parser
