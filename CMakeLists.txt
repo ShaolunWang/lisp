@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.20)
 SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_WITH_INSTALL_NAME_DIR ON)
 
 include_directories(${LLVM_INCLUDE_DIRS})
 project(lisp)
-add_subdirectory(parser)
+#add_subdirectory(parser)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_BINARY_DIR}/include)
+add_subdirectory(src)
 add_compile_options(-ly -ll)
-include_directories('')
- 
+add_executable(parse src/main.cpp src/ast.cpp)

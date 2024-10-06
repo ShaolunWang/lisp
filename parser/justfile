@@ -1,10 +1,12 @@
 build:
-	just bison && just lex && just compile
+	just bison && just lex && just compile && just run
+run: 
+	cat test  && ./parser < test
 lex:
 	flex  lexer.l 
 compile:
-	clang -o parser lex.yy.c y.tab.c -ly -ll
+	clang++ -o parser scanner.cpp  Parser.cpp -fsanitize=address
 bison:
-	bison -vdty parser.y
+	bison  parser.y
 @cleanup:
-	rm -rf *.tab.* *.yy.* *.output parser
+	rm -rf *.tab.* *.yy.* *.output parser *.cpp *.hpp
