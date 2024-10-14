@@ -1,0 +1,164 @@
+Grammar
+
+    0 $accept: PROG $end
+
+    1 PROG: ε
+    2     | PROG EXPR
+
+    3 LIST: LPAREN EXPR_LIST RPAREN
+
+    4 EXPR_LIST: ε
+    5          | EXPR EXPR_LIST
+
+    6 EXPR: SYMBOL
+    7     | NUMBER
+    8     | LIST
+    9     | NEWLINE
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    LPAREN (258) 3
+    RPAREN (259) 3
+    NEWLINE <std::string> (260) 9
+    SYMBOL <std::string> (261) 6
+    NUMBER <int> (262) 7
+
+
+Nonterminals, with rules where they appear
+
+    $accept (8)
+        on left: 0
+    PROG (9)
+        on left: 1 2
+        on right: 0 2
+    LIST <std::string> (10)
+        on left: 3
+        on right: 8
+    EXPR_LIST <std::string> (11)
+        on left: 4 5
+        on right: 3 5
+    EXPR <std::string> (12)
+        on left: 6 7 8 9
+        on right: 2 5
+
+
+State 0
+
+    0 $accept: • PROG $end
+
+    $default  reduce using rule 1 (PROG)
+
+    PROG  go to state 1
+
+
+State 1
+
+    0 $accept: PROG • $end
+    2 PROG: PROG • EXPR
+
+    $end     shift, and go to state 2
+    LPAREN   shift, and go to state 3
+    NEWLINE  shift, and go to state 4
+    SYMBOL   shift, and go to state 5
+    NUMBER   shift, and go to state 6
+
+    LIST  go to state 7
+    EXPR  go to state 8
+
+
+State 2
+
+    0 $accept: PROG $end •
+
+    $default  accept
+
+
+State 3
+
+    3 LIST: LPAREN • EXPR_LIST RPAREN
+
+    LPAREN   shift, and go to state 3
+    NEWLINE  shift, and go to state 4
+    SYMBOL   shift, and go to state 5
+    NUMBER   shift, and go to state 6
+
+    $default  reduce using rule 4 (EXPR_LIST)
+
+    LIST       go to state 7
+    EXPR_LIST  go to state 9
+    EXPR       go to state 10
+
+
+State 4
+
+    9 EXPR: NEWLINE •
+
+    $default  reduce using rule 9 (EXPR)
+
+
+State 5
+
+    6 EXPR: SYMBOL •
+
+    $default  reduce using rule 6 (EXPR)
+
+
+State 6
+
+    7 EXPR: NUMBER •
+
+    $default  reduce using rule 7 (EXPR)
+
+
+State 7
+
+    8 EXPR: LIST •
+
+    $default  reduce using rule 8 (EXPR)
+
+
+State 8
+
+    2 PROG: PROG EXPR •
+
+    $default  reduce using rule 2 (PROG)
+
+
+State 9
+
+    3 LIST: LPAREN EXPR_LIST • RPAREN
+
+    RPAREN  shift, and go to state 11
+
+
+State 10
+
+    5 EXPR_LIST: EXPR • EXPR_LIST
+
+    LPAREN   shift, and go to state 3
+    NEWLINE  shift, and go to state 4
+    SYMBOL   shift, and go to state 5
+    NUMBER   shift, and go to state 6
+
+    $default  reduce using rule 4 (EXPR_LIST)
+
+    LIST       go to state 7
+    EXPR_LIST  go to state 12
+    EXPR       go to state 10
+
+
+State 11
+
+    3 LIST: LPAREN EXPR_LIST RPAREN •
+
+    $default  reduce using rule 3 (LIST)
+
+
+State 12
+
+    5 EXPR_LIST: EXPR EXPR_LIST •
+
+    $default  reduce using rule 5 (EXPR_LIST)

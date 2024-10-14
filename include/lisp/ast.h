@@ -40,6 +40,7 @@ public:
   std::string name;
   std::string make_print() const override;
 };
+
 class Number : public Literal {
 public:
   Number(int value) : value{value} {}
