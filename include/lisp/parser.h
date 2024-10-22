@@ -13,10 +13,20 @@ public:
 
 public:
   std::unique_ptr<Lisp::Program> driver();
-  int parse_tok();
+  std::unique_ptr<Lisp::Number> parse_number();
+  std::unique_ptr<Lisp::Symbol> parse_symbol();
+  std::unique_ptr<Lisp::ListExpr> parse_listExpr();
+  std::unique_ptr<Lisp::Expr> parse_expr();
+  std::unique_ptr<Lisp::Program> parse_program();
+  int getNextToken(){
+	return current_tok = tok();
+  };
+
+  int tok();
 
 private:
-  int lastChar;
+  int last_char;
+  int current_tok;
   std::string identifierStr;
   int numVal;
 };
